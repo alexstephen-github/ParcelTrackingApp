@@ -1,0 +1,40 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: parcel-tracking-service
+  description: Microservice for tracking parcels with real-time status updates and admin management
+  tags:
+    - java
+    - spring-boot
+    - microservice
+    - rest-api
+    - logistics
+  annotations:
+    github.com/project-slug: alexstephen-github/ParcelTrackingApp
+    jira.com/project-key: PTS
+    jenkins.io/job-full-name: logistics/parcel-tracking-ci
+    sonarqube.org/project-key: com.hcl.parceltracking
+    grafana.com/dashboard-selector: "app=parcel-tracking-service"
+  links:
+    - url: https://confluence.hcl.com/display/LOGISTICS/Parcel+Tracking+Docs
+      title: Service Documentation
+      icon: dashboard
+    - url: https://jenkins.hcl.com/job/parcel-tracking-cd
+      title: CD Pipeline
+      icon: cicd
+    - url: https://grafana.hcl.com/d/parcel-tracking
+      title: Operational Dashboard
+      icon: monitor
+spec:
+  type: service
+  lifecycle: production
+  owner: team-logistics
+  system: shipping-logistics
+  providesApis:
+    - parcel-tracking-api
+  consumesApis:
+    - maps-api
+    - notification-service-api
+  dependsOn:
+    - resource:database/parcel-tracking-db
+    - component:redis-cache-cluster

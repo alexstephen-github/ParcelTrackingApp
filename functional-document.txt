@@ -1,0 +1,88 @@
+======================================================================
+FUNCTIONAL SPECIFICATION DOCUMENT: PARCEL TRACKING SYSTEM
+======================================================================
+
+VERSION: 1.0
+DATE: 2025-11-12
+PREPARED BY: [Your Name/Team Name]
+APPROVED BY: [Approver Name, if applicable]
+
+----------------------------------------------------------------------
+1. INTRODUCTION
+----------------------------------------------------------------------
+
+1.1. PURPOSE
+The purpose of this document is to provide a detailed overview of the functional requirements for the Parcel Tracking System (PTS). It describes the features, behaviors, and intended functionality from the user's perspective.
+
+1.2. SCOPE
+The PTS will allow customers to track the status and location of their shipments online using a unique tracking ID. It will provide real-time updates and estimated delivery times. The system will also allow administrators to update shipment statuses.
+
+The system will NOT handle payment processing, user registration (initially), or international customs documentation.
+
+1.3. INTENDED AUDIENCE
+This document is intended for the development team, quality assurance (QA) testers, project manager, and stakeholders.
+
+----------------------------------------------------------------------
+2. OVERALL DESCRIPTION
+----------------------------------------------------------------------
+
+2.1. PROBLEM DEFINITION
+Customers often lack information about the location and status of their parcels, leading to anxiety and increased pressure on customer service. The PTS aims to address this by providing transparency and accurate, accessible information.
+
+2.2. USERS AND ROLES
+
+*   **Customer/User:** The individual who wants to track a parcel.
+*   **Administrator (Admin):** The internal staff member responsible for managing and updating shipment information.
+
+----------------------------------------------------------------------
+3. FUNCTIONAL REQUIREMENTS
+----------------------------------------------------------------------
+
+This section details the specific functions the system must perform.
+
+3.1. CUSTOMER MODULE
+
+    **FR-C1: Track Parcel Status**
+    *   **Description:** The system shall allow a user to enter a unique tracking ID via a web interface.
+    *   **Action:** User enters tracking ID (e.g., '1234567890') in a designated input field and clicks the "Track" button.
+    *   **System Response:** The system shall validate the ID and display the current status and location details for the corresponding parcel. If the ID is invalid, an error message shall be displayed.
+    *   **Details Displayed:** Current location, current status (e.g., "In Transit," "Delivered," "Out for Delivery"), date/time of last update, and estimated delivery date.
+
+    **FR-C2: Receive Notifications**
+    *   **Description:** The system shall provide automated notifications (e.g., email or SMS) to the customer at significant points in the shipment's journey (e.g., dispatch, out for delivery, delivery confirmation).
+
+3.2. ADMIN MODULE
+
+    **FR-A1: Update Shipment Status**
+    *   **Description:** The system shall allow the Admin to log in securely and update the status and location of a specific parcel using its tracking ID.
+    *   **Action:** Admin enters tracking ID, selects the new status and location from predefined lists, and submits the update.
+    *   **System Response:** The system shall update the central database with the new information and trigger any relevant customer notifications.
+
+    **FR-A2: Generate Barcode**
+    *   **Description:** The system shall automatically generate a unique barcode for each new shipment upon initial entry.
+
+----------------------------------------------------------------------
+4. NON-FUNCTIONAL REQUIREMENTS
+----------------------------------------------------------------------
+
+*   **Performance:** The tracking information should load within 3 seconds under normal network conditions.
+*   **Security:** Back-end servers and databases shall only be accessible to authenticated administrators.
+*   **Availability:** The online tracking feature should be available 99.9% of the time.
+*   **Usability:** The customer tracking interface should be intuitive and require basic computer skills to use.
+
+----------------------------------------------------------------------
+5. DATA DICTIONARY
+----------------------------------------------------------------------
+
+*   **Tracking ID:** Unique alphanumeric identifier for each parcel (e.g., 10-15 characters).
+*   **Status:** Current state of the parcel (e.g., "Booked," "In Transit," "Delivered," "Delayed").
+*   **Location:** The physical location where the last scan occurred.
+*   **Timestamp:** Date and time of the status update.
+
+----------------------------------------------------------------------
+6. ASSUMPTIONS & CONSTRAINTS
+----------------------------------------------------------------------
+
+*   It is assumed that parcels will be scanned at every major checkpoint (e.g., warehouse, sorting facility, delivery truck) to ensure accurate tracking data.
+*   The system requires continuous internet connectivity for real-time updates.
+*   A third-party Maps API will be used for displaying location information.
