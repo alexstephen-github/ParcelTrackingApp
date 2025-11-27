@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: parcel-tracking-db
+    environment:
+      POSTGRES_DB: parceldb
+      POSTGRES_USER: parcel_user
+      POSTGRES_PASSWORD: parcel_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - parcel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U parcel_user -d parceldb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Parcel Tracking Application
+  parcel-tracking-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: parcel-tracking-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=parceldb
+      - DB_USERNAME=parcel_user
+      - DB_PASSWORD=parcel_pass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - parcel-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  parcel-network:
+    driver: bridge

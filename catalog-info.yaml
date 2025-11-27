@@ -1,0 +1,64 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: parcel-tracking-service
+  description: Microservice for real-time parcel tracking and shipment management
+  tags:
+    - java
+    - spring-boot
+    - microservice
+    - logistics
+    - rest-api
+    - postgresql
+  annotations:
+    github.com/project-slug: alexstephen-github/ParcelTrackingApp
+    sonarqube.org/project-key: parcel-tracking-service
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: http://localhost:8080/swagger-ui.html
+      title: API Documentation
+      icon: dashboard
+    - url: http://localhost:8080/actuator/health
+      title: Health Check
+      icon: health
+    - url: http://localhost:8080/h2-console
+      title: H2 Database Console (Dev)
+      icon: database
+spec:
+  type: service
+  lifecycle: production
+  owner: logistics-team
+  system: parcel-management-system
+  providesApis:
+    - parcel-tracking-api
+  dependsOn:
+    - resource:parcel-database
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: parcel-tracking-api
+  description: REST API for tracking parcels and managing shipments
+  tags:
+    - rest
+    - openapi
+spec:
+  type: openapi
+  lifecycle: production
+  owner: logistics-team
+  system: parcel-management-system
+  definition:
+    $text: http://localhost:8080/v3/api-docs
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: parcel-database
+  description: PostgreSQL database for parcel tracking system
+  tags:
+    - database
+    - postgresql
+spec:
+  type: database
+  owner: logistics-team
+  system: parcel-management-system
